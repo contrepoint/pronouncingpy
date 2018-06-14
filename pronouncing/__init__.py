@@ -216,8 +216,14 @@ def rhymes(word):
     :returns: a list of rhyming words
     """
     phones = phones_for_word(word)
-    if len(phones) > 0:
-        return [w for w in rhyme_lookup.get(rhyming_part(phones[0]), [])
-                if w != word]
-    else:
+    if len(phones) == 0:
         return []
+    initial_rhymes = get_rhymes(word, phones[0])
+    if len(initial_rhymes) > 0:
+        return initial_rhymes
+    else:
+        return get_rhymes(word, phones[1])
+
+def get_rhymes(word, phone):
+    return [w for w in rhyme_lookup.get(rhyming_part(phone), [])
+              if w != word]
